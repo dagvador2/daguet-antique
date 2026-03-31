@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPieceBySlug, getPieces } from "@/lib/strapi";
-import { getStrapiMediaUrl } from "@/lib/utils";
+import { getStrapiMediaUrl, stripHtml } from "@/lib/utils";
 import { PieceGallery } from "@/components/pieces/PieceGallery";
 import { PieceInfo } from "@/components/pieces/PieceInfo";
 import { PieceCard } from "@/components/pieces/PieceCard";
@@ -27,9 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: piece.title,
-    description: piece.description
-      ? piece.description.replace(/<[^>]*>/g, "").slice(0, 160)
-      : `${piece.title} — Daguet Antique`,
+    description: stripHtml(piece.description).slice(0, 160) || `${piece.title} \u2014 Daguet Antique`,
     openGraph: {
       images: piece.photos[0]
         ? [{ url: getStrapiMediaUrl(piece.photos[0].url) }]
@@ -102,7 +100,7 @@ function buildJsonLd(piece: Piece) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: piece.title,
-    description: piece.description?.replace(/<[^>]*>/g, "").slice(0, 300),
+    description: stripHtml(piece.description).slice(0, 300),
     image: piece.photos.map((p) => getStrapiMediaUrl(p.url)),
     brand: { "@type": "Brand", name: "Daguet Antique" },
     ...(piece.materials && { material: piece.materials }),

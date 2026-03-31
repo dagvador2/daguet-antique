@@ -20,3 +20,8 @@ export function getStrapiMediaUrl(url: string): string {
   const base = process.env.NEXT_PUBLIC_STRAPI_URL || "";
   return `${base}${url}`;
 }
+
+export function stripHtml(html: string | null | undefined): string {
+  if (!html || typeof html !== "string") return "";
+  return html.replace(/<[^>]*>/g, "").trim();
+}
