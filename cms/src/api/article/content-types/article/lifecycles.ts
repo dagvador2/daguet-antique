@@ -12,25 +12,31 @@ async function translateEntry(event: any) {
   translating.add(docId);
 
   try {
+    // Re-fetch the full entry since lifecycle result may not include all fields
+    const entry = await strapi.documents('api::article.article').findOne({
+      documentId: docId,
+    });
+    if (!entry) return;
+
     const updates: Record<string, any> = {};
 
-    if (result.title) {
-      const titleEn = await translateText(result.title);
+    if (entry.title) {
+      const titleEn = await translateText(entry.title);
       if (titleEn) updates.title_en = titleEn;
     }
 
-    if (result.excerpt) {
-      const excerptEn = await translateText(result.excerpt);
+    if (entry.excerpt) {
+      const excerptEn = await translateText(entry.excerpt);
       if (excerptEn) updates.excerpt_en = excerptEn;
     }
 
-    if (result.body) {
-      const bodyEn = await translateBlocks(result.body);
+    if (entry.body) {
+      const bodyEn = await translateBlocks(entry.body);
       if (bodyEn) updates.body_en = bodyEn;
     }
 
-    if (result.seo_description) {
-      const seoEn = await translateText(result.seo_description);
+    if (entry.seo_description) {
+      const seoEn = await translateText(entry.seo_description);
       if (seoEn) updates.seo_description_en = seoEn;
     }
 
@@ -39,7 +45,7 @@ async function translateEntry(event: any) {
         documentId: docId,
         data: updates,
       });
-      strapi.log.info(`Translated article "${result.title}" to EN`);
+      strapi.log.info(`Translated article "${entry.title}" to EN`);
     }
   } catch (err) {
     strapi.log.error(`Translation failed for article ${docId}:`, err);

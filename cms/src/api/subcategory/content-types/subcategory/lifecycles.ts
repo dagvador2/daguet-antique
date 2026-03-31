@@ -21,15 +21,19 @@ async function translateEntry(event: any) {
   translating.add(docId);
 
   try {
-    if (result.name) {
-      const nameEn = await translateText(result.name);
-      if (nameEn) {
-        await strapi.documents('api::subcategory.subcategory').update({
-          documentId: docId,
-          data: { name_en: nameEn },
-        });
-        strapi.log.info(`Translated subcategory "${result.name}" to EN`);
-      }
+    // Re-fetch to ensure we have all fields
+    const entry = await strapi.documents('api::subcategory.subcategory').findOne({
+      documentId: docId,
+    });
+    if (!entry?.name) return;
+
+    const nameEn = await translateText(entry.name);
+    if (nameEn) {
+      await strapi.documents('api::subcategory.subcategory').update({
+        documentId: docId,
+        data: { name_en: nameEn },
+      });
+      strapi.log.info(`Translated subcategory "${entry.name}" to EN`);
     }
   } catch (err) {
     strapi.log.error(`Translation failed for subcategory ${docId}:`, err);
