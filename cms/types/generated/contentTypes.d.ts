@@ -462,6 +462,57 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
+  collectionName: 'articles';
+  info: {
+    displayName: 'Article';
+    pluralName: 'articles';
+    singularName: 'article';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    body_en: Schema.Attribute.Blocks;
+    category: Schema.Attribute.Enumeration<
+      ['expertise', 'savoir-faire', 'coulisses', 'marche']
+    > &
+      Schema.Attribute.Required;
+    cover_image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    excerpt: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
+    excerpt_en: Schema.Attribute.Text;
+    language: Schema.Attribute.Enumeration<['fr', 'en']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'fr'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::article.article'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    related_pieces: Schema.Attribute.Relation<'manyToMany', 'api::piece.piece'>;
+    seo_description: Schema.Attribute.Text;
+    seo_description_en: Schema.Attribute.Text;
+    seo_keywords: Schema.Attribute.Text;
+    slug: Schema.Attribute.UID<'title'>;
+    tags: Schema.Attribute.JSON;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    title_en: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
   collectionName: 'contact_pages';
   info: {
@@ -544,13 +595,16 @@ export interface ApiPiecePiece extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Blocks;
+    description_en: Schema.Attribute.Blocks;
     dimensions: Schema.Attribute.String;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::piece.piece'> &
       Schema.Attribute.Private;
     materials: Schema.Attribute.String;
+    materials_en: Schema.Attribute.String;
     period: Schema.Attribute.String;
+    period_en: Schema.Attribute.String;
     photos: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
     price: Schema.Attribute.Decimal;
     provenance: Schema.Attribute.String;
@@ -558,6 +612,8 @@ export interface ApiPiecePiece extends Struct.CollectionTypeSchema {
     sale_status: Schema.Attribute.Enumeration<['available', 'sold']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'available'>;
+    seo_description: Schema.Attribute.Text;
+    seo_description_en: Schema.Attribute.Text;
     show_price: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     slug: Schema.Attribute.UID<'title'>;
     subcategory: Schema.Attribute.Relation<
@@ -565,6 +621,7 @@ export interface ApiPiecePiece extends Struct.CollectionTypeSchema {
       'api::subcategory.subcategory'
     >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    title_en: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -627,6 +684,7 @@ export interface ApiSubcategorySubcategory extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    name_en: Schema.Attribute.String;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     pieces: Schema.Attribute.Relation<'oneToMany', 'api::piece.piece'>;
     publishedAt: Schema.Attribute.DateTime;
@@ -1149,6 +1207,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::about-page.about-page': ApiAboutPageAboutPage;
+      'api::article.article': ApiArticleArticle;
       'api::contact-page.contact-page': ApiContactPageContactPage;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::piece.piece': ApiPiecePiece;
