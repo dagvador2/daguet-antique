@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
   const isEn = locale === "en";
-  const about = await getAboutPage();
+  const about = await getAboutPage(locale);
 
   return (
     <div className="pt-28 pb-20 md:pb-28">

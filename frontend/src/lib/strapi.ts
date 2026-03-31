@@ -275,7 +275,9 @@ export async function getSubcategories(
 // Single types
 // ---------------------------------------------------------------------------
 
-export async function getHomepage(): Promise<Homepage> {
+export async function getHomepage(
+  locale: string = "fr"
+): Promise<Homepage> {
   if (USE_MOCK) return mockHomepage;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -285,16 +287,19 @@ export async function getHomepage(): Promise<Homepage> {
   const raw = data?.data;
   if (!raw) return mockHomepage;
 
+  const useEn = locale === "en";
   return {
     heroImage: raw.hero_image ? mapMedia(raw.hero_image) : null,
-    heroTitle: raw.hero_title ?? "Daguet Antique",
-    heroSubtitle: raw.hero_subtitle ?? "",
-    introText: blocksToHtml(raw.intro_text),
+    heroTitle: (useEn && raw.hero_title_en) || (raw.hero_title ?? "Daguet Antique"),
+    heroSubtitle: (useEn && raw.hero_subtitle_en) || (raw.hero_subtitle ?? ""),
+    introText: blocksToHtml((useEn && raw.intro_text_en) || raw.intro_text),
     introImage: raw.intro_image ? mapMedia(raw.intro_image) : null,
   };
 }
 
-export async function getAboutPage(): Promise<AboutPage> {
+export async function getAboutPage(
+  locale: string = "fr"
+): Promise<AboutPage> {
   if (USE_MOCK) return mockAboutPage;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -304,12 +309,15 @@ export async function getAboutPage(): Promise<AboutPage> {
   const raw = data?.data;
   if (!raw) return mockAboutPage;
 
+  const useEn = locale === "en";
   return {
-    title: raw.title ?? "\u00C0 propos",
+    title: (useEn && raw.title_en) || (raw.title ?? "\u00C0 propos"),
     portraitImage: raw.portrait_image ? mapMedia(raw.portrait_image) : null,
-    biography: blocksToHtml(raw.biography),
+    biography: blocksToHtml((useEn && raw.biography_en) || raw.biography),
     atelierImages: (raw.atelier_images ?? []).map(mapMedia),
-    atelierDescription: blocksToHtml(raw.atelier_description),
+    atelierDescription: blocksToHtml(
+      (useEn && raw.atelier_description_en) || raw.atelier_description
+    ),
   };
 }
 
@@ -430,7 +438,9 @@ export async function getArticlesByPiece(
 // Single types
 // ---------------------------------------------------------------------------
 
-export async function getSiteSettings(): Promise<SiteSettings> {
+export async function getSiteSettings(
+  locale: string = "fr"
+): Promise<SiteSettings> {
   if (USE_MOCK) return mockSiteSettings;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -440,9 +450,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   const raw = data?.data;
   if (!raw) return mockSiteSettings;
 
+  const useEn = locale === "en";
   return {
     siteName: raw.site_name ?? "Daguet Antique",
     logo: raw.logo ? mapMedia(raw.logo) : null,
-    footerText: raw.footer_text ?? "",
+    footerText: (useEn && raw.footer_text_en) || (raw.footer_text ?? ""),
   };
 }

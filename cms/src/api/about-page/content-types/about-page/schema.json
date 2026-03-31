@@ -28,6 +28,15 @@
     },
     "atelier_description": {
       "type": "blocks"
+    },
+    "title_en": {
+      "type": "string"
+    },
+    "biography_en": {
+      "type": "blocks"
+    },
+    "atelier_description_en": {
+      "type": "blocks"
     }
   }
 }

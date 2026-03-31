@@ -442,8 +442,10 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
   };
   attributes: {
     atelier_description: Schema.Attribute.Blocks;
+    atelier_description_en: Schema.Attribute.Blocks;
     atelier_images: Schema.Attribute.Media<'images', true>;
     biography: Schema.Attribute.Blocks;
+    biography_en: Schema.Attribute.Blocks;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -456,6 +458,7 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
     portrait_image: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
+    title_en: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -562,9 +565,12 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     hero_image: Schema.Attribute.Media<'images'>;
     hero_subtitle: Schema.Attribute.String;
+    hero_subtitle_en: Schema.Attribute.String;
     hero_title: Schema.Attribute.String;
+    hero_title_en: Schema.Attribute.String;
     intro_image: Schema.Attribute.Media<'images'>;
     intro_text: Schema.Attribute.Blocks;
+    intro_text_en: Schema.Attribute.Blocks;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -645,6 +651,7 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     footer_text: Schema.Attribute.String;
+    footer_text_en: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

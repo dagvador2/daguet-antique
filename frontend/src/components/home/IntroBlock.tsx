@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { getHomepage } from "@/lib/strapi";
 import { getStrapiMediaUrl } from "@/lib/utils";
+import { getPath } from "@/lib/routes";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
-export async function IntroBlock() {
-  const homepage = await getHomepage();
+export async function IntroBlock({ locale = "fr" }: { locale?: string }) {
+  const homepage = await getHomepage(locale);
+  const isEn = locale === "en";
 
   return (
     <section className="py-20 md:py-28 bg-bg-secondary">
@@ -15,16 +17,16 @@ export async function IntroBlock() {
           <ScrollReveal>
             <div className="space-y-6">
               <h2 className="font-serif text-3xl md:text-4xl tracking-wide">
-                L&apos;atelier
+                {isEn ? "The workshop" : "L\u2019atelier"}
               </h2>
               <p className="text-text-secondary leading-relaxed text-base md:text-lg">
                 {homepage.introText}
               </p>
               <Link
-                href="/a-propos"
+                href={getPath(locale as "fr" | "en", "about")}
                 className="inline-block font-sans text-sm tracking-widest uppercase text-text-secondary hover:text-text-primary transition-colors border-b border-text-muted hover:border-text-primary pb-1"
               >
-                En savoir plus &rarr;
+                {isEn ? "Learn more" : "En savoir plus"} &rarr;
               </Link>
             </div>
           </ScrollReveal>

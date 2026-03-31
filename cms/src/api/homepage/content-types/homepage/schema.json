@@ -28,6 +28,15 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": ["images"]
+    },
+    "hero_title_en": {
+      "type": "string"
+    },
+    "hero_subtitle_en": {
+      "type": "string"
+    },
+    "intro_text_en": {
+      "type": "blocks"
     }
   }
 }

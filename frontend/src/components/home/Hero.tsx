@@ -2,8 +2,8 @@ import Image from "next/image";
 import { getHomepage } from "@/lib/strapi";
 import { getStrapiMediaUrl } from "@/lib/utils";
 
-export async function Hero() {
-  const homepage = await getHomepage();
+export async function Hero({ locale = "fr" }: { locale?: string }) {
+  const homepage = await getHomepage(locale);
 
   return (
     <section className="relative w-full h-[85vh] flex items-center justify-center">
