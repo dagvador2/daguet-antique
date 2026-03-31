@@ -58,6 +58,7 @@ export interface Piece {
   status: "available" | "sold";
   workInProgress: boolean;
   featured: boolean;
+  seoDescription: string | null;
   publishedAt: string;
 }
 
@@ -90,4 +91,20 @@ export interface SiteSettings {
   siteName: string;
   logo: StrapiMedia | null;
   footerText: string;
+}
+
+export interface Article {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  body: string;
+  coverImage: StrapiMedia | null;
+  tags: string[];
+  category: "expertise" | "savoir-faire" | "coulisses" | "marche";
+  language: "fr" | "en";
+  relatedPieces: Piece[];
+  seoKeywords: string | null;
+  seoDescription: string | null;
+  publishedAt: string;
 }

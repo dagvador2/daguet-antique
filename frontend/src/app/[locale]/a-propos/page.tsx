@@ -3,14 +3,27 @@ import Image from "next/image";
 import { getAboutPage } from "@/lib/strapi";
 import { getStrapiMediaUrl } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { getAlternates } from "@/lib/routes";
 
-export const metadata: Metadata = {
-  title: "\u00C0 propos",
-  description:
-    "D\u00E9couvrez le parcours de Christophe Daguet, \u00E9b\u00E9niste, designer et antiquaire install\u00E9 \u00E0 Paris.",
-};
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export default async function AboutPage() {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === "en";
+  return {
+    title: isEn ? "About" : "\u00C0 propos",
+    description: isEn
+      ? "Discover the journey of Christophe Daguet, cabinetmaker, designer and antique dealer based in Paris."
+      : "D\u00E9couvrez le parcours de Christophe Daguet, \u00E9b\u00E9niste, designer et antiquaire install\u00E9 \u00E0 Paris.",
+    alternates: getAlternates("about"),
+  };
+}
+
+export default async function AboutPage({ params }: PageProps) {
+  const { locale } = await params;
+  const isEn = locale === "en";
   const about = await getAboutPage();
 
   return (
@@ -18,21 +31,17 @@ export default async function AboutPage() {
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <h1 className="font-serif text-4xl md:text-5xl tracking-wide text-center">
-            {about.title}
+            {isEn ? "About" : about.title}
           </h1>
         </ScrollReveal>
 
-        {/* Portrait + Biography */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-12 md:gap-16 items-start">
           <ScrollReveal>
             {about.portraitImage && (
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src={getStrapiMediaUrl(about.portraitImage.url)}
-                  alt={
-                    about.portraitImage.alternativeText ||
-                    "Portrait de Christophe Daguet"
-                  }
+                  alt={about.portraitImage.alternativeText || "Portrait de Christophe Daguet"}
                   fill
                   sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover"
@@ -49,12 +58,11 @@ export default async function AboutPage() {
           </ScrollReveal>
         </div>
 
-        {/* Atelier section */}
         {about.atelierImages.length > 0 && (
           <div className="mt-20 md:mt-28">
             <ScrollReveal>
               <h2 className="font-serif text-3xl md:text-4xl tracking-wide text-center">
-                L&apos;atelier
+                {isEn ? "The workshop" : "L\u2019atelier"}
               </h2>
             </ScrollReveal>
 
@@ -78,9 +86,7 @@ export default async function AboutPage() {
               <ScrollReveal className="mt-8 max-w-3xl mx-auto">
                 <div
                   className="text-text-secondary leading-relaxed text-center"
-                  dangerouslySetInnerHTML={{
-                    __html: about.atelierDescription,
-                  }}
+                  dangerouslySetInnerHTML={{ __html: about.atelierDescription }}
                 />
               </ScrollReveal>
             )}

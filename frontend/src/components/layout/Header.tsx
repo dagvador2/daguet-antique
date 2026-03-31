@@ -4,9 +4,17 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Navigation } from "./Navigation";
 import { MobileMenu } from "./MobileMenu";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/lib/i18n";
 
-export function Header() {
+interface HeaderProps {
+  locale: Locale;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dict: any;
+}
+
+export function Header({ locale, dict }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -32,13 +40,16 @@ export function Header() {
       >
         <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
           <Link
-            href="/"
+            href={locale === "en" ? "/en" : "/"}
             className="font-serif text-xl md:text-2xl tracking-[0.25em] uppercase text-text-primary"
           >
             Daguet Antique
           </Link>
 
-          <Navigation />
+          <div className="hidden lg:flex items-center gap-6">
+            <Navigation locale={locale} dict={dict} />
+            <LanguageSwitcher locale={locale} />
+          </div>
 
           {/* Mobile hamburger */}
           <button
@@ -69,7 +80,12 @@ export function Header() {
         </div>
       </header>
 
-      <MobileMenu isOpen={menuOpen} onClose={closeMenu} />
+      <MobileMenu
+        isOpen={menuOpen}
+        onClose={closeMenu}
+        locale={locale}
+        dict={dict}
+      />
     </>
   );
 }

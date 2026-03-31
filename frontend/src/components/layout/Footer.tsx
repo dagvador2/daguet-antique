@@ -1,15 +1,24 @@
 import Link from "next/link";
+import { getPath } from "@/lib/routes";
+import type { Locale } from "@/lib/i18n";
 
-const navLinks = [
-  { href: "/antiquites", label: "Antiquités" },
-  { href: "/travaux", label: "Travaux" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/contact", label: "Contact" },
-  { href: "/mentions-legales", label: "Mentions légales" },
-];
+interface FooterProps {
+  locale: Locale;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dict: any;
+}
 
-export function Footer() {
+export function Footer({ locale, dict }: FooterProps) {
   const year = new Date().getFullYear();
+
+  const navLinks = [
+    { route: "antiquites", label: dict.nav.antiquites },
+    { route: "travaux", label: dict.nav.travaux },
+    { route: "journal", label: dict.nav.journal },
+    { route: "about", label: dict.nav.about },
+    { route: "contact", label: dict.nav.contact },
+    { route: "legal", label: dict.nav.legal },
+  ];
 
   return (
     <footer className="bg-bg-secondary border-t border-border-custom">
@@ -22,7 +31,7 @@ export function Footer() {
               Daguet Antique
             </h2>
             <p className="mt-2 text-sm text-text-muted">
-              Ébéniste, designer et antiquaire
+              {dict.footer.tagline}
             </p>
           </div>
 
@@ -45,8 +54,8 @@ export function Footer() {
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
-                href={link.href}
+                key={link.route}
+                href={getPath(locale, link.route)}
                 className="text-text-secondary hover:text-text-primary transition-colors"
               >
                 {link.label}
@@ -58,7 +67,7 @@ export function Footer() {
         {/* Bottom section */}
         <div className="mt-12 pt-8 border-t border-border-custom flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           <p className="text-xs text-text-muted">
-            &copy; {year} Daguet Antique — Tous droits réservés
+            &copy; {year} Daguet Antique — {dict.footer.rights}
           </p>
 
           {/* Instagram */}

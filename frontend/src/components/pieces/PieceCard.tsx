@@ -2,18 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Piece } from "@/lib/types";
 import { formatPrice, getStrapiMediaUrl } from "@/lib/utils";
+import { getPath } from "@/lib/routes";
 import { SoldBadge } from "./SoldBadge";
+import type { Locale } from "@/lib/i18n";
 
 interface PieceCardProps {
   piece: Piece;
+  locale?: Locale;
 }
 
-export function PieceCard({ piece }: PieceCardProps) {
-  const href =
-    piece.category === "antiquite"
-      ? `/antiquites/${piece.slug}`
-      : `/travaux/${piece.slug}`;
-
+export function PieceCard({ piece, locale = "fr" }: PieceCardProps) {
+  const route = piece.category === "antiquite" ? "antiquites" : "travaux";
+  const href = getPath(locale, route, piece.slug);
   const photo = piece.photos[0];
 
   return (
@@ -33,7 +33,7 @@ export function PieceCard({ piece }: PieceCardProps) {
         {piece.workInProgress && (
           <div className="absolute top-3 left-3 z-10 bg-accent px-3 py-1">
             <span className="text-white text-xs tracking-wider uppercase font-sans">
-              En cours
+              {locale === "en" ? "In progress" : "En cours"}
             </span>
           </div>
         )}
@@ -48,7 +48,7 @@ export function PieceCard({ piece }: PieceCardProps) {
           <p className="text-sm text-text-muted">{piece.period}</p>
         )}
         <p className="text-sm text-text-secondary">
-          {formatPrice(piece.price, piece.showPrice)}
+          {formatPrice(piece.price, piece.showPrice, locale)}
         </p>
       </div>
     </Link>

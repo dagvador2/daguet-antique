@@ -5,6 +5,7 @@ import type {
   AboutPage,
   ContactPage,
   SiteSettings,
+  Article,
 } from "./types";
 
 // --- Subcategories ---
@@ -86,6 +87,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: true,
+    seoDescription: null,
     publishedAt: "2026-03-28T10:00:00.000Z",
   },
   {
@@ -115,6 +117,7 @@ export const mockPieces: Piece[] = [
     status: "sold",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-25T10:00:00.000Z",
   },
   {
@@ -152,6 +155,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: true,
+    seoDescription: null,
     publishedAt: "2026-03-20T10:00:00.000Z",
   },
   {
@@ -181,6 +185,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-18T10:00:00.000Z",
   },
   {
@@ -210,6 +215,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: true,
+    seoDescription: null,
     publishedAt: "2026-03-15T10:00:00.000Z",
   },
   {
@@ -239,6 +245,7 @@ export const mockPieces: Piece[] = [
     status: "sold",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-12T10:00:00.000Z",
   },
   {
@@ -268,6 +275,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-10T10:00:00.000Z",
   },
   {
@@ -297,6 +305,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-08T10:00:00.000Z",
   },
 
@@ -336,6 +345,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: true,
+    seoDescription: null,
     publishedAt: "2026-03-26T10:00:00.000Z",
   },
   {
@@ -365,6 +375,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-22T10:00:00.000Z",
   },
   {
@@ -394,6 +405,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: false,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-16T10:00:00.000Z",
   },
   {
@@ -423,6 +435,7 @@ export const mockPieces: Piece[] = [
     status: "available",
     workInProgress: true,
     featured: false,
+    seoDescription: null,
     publishedAt: "2026-03-05T10:00:00.000Z",
   },
 ];
@@ -501,3 +514,77 @@ export const mockSiteSettings: SiteSettings = {
   logo: null,
   footerText: "Ébéniste, designer et antiquaire",
 };
+
+// --- Articles ---
+
+export const mockArticles: Article[] = [
+  {
+    id: 1,
+    title: "Comment reconnaître un meuble Art Déco authentique",
+    slug: "comment-reconnaitre-meuble-art-deco-authentique",
+    excerpt:
+      "Découvrez les critères essentiels pour identifier un véritable meuble Art Déco : matériaux, formes géométriques, marqueterie et signatures d'époque.",
+    body: '<p>L\'Art Déco, mouvement né dans les années 1920, a profondément marqué le mobilier français. Mais comment distinguer une pièce authentique d\'une reproduction ? Voici les clés pour reconnaître un vrai meuble Art Déco.</p><h2>Les matériaux nobles</h2><p>Les ébénistes Art Déco privilégiaient les bois exotiques : palissandre, ébène de Macassar, amarante. Le placage était une technique courante, réalisée avec une maîtrise exceptionnelle. La marqueterie géométrique est un signe distinctif de l\'époque.</p><h2>Les formes caractéristiques</h2><p>Le mobilier Art Déco se reconnaît à ses lignes géométriques épurées, ses volumes imposants et ses symétries affirmées. Les pieds sont souvent droits ou légèrement évasés, loin des courbes de l\'Art Nouveau.</p>',
+    coverImage: {
+      id: 200,
+      url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=675&fit=crop",
+      alternativeText: "Meuble Art Déco en palissandre",
+      width: 1200,
+      height: 675,
+      formats: null,
+    },
+    tags: ["art-deco", "authentification", "guide"],
+    category: "expertise",
+    language: "fr",
+    relatedPieces: [mockPieces[0], mockPieces[2]],
+    seoKeywords: "meuble art déco authentique, reconnaître art déco, mobilier art déco",
+    seoDescription: null,
+    publishedAt: "2026-03-25T10:00:00.000Z",
+  },
+  {
+    id: 2,
+    title: "De la planche au meuble : fabrication d'une console sur mesure",
+    slug: "de-la-planche-au-meuble-fabrication-console-sur-mesure",
+    excerpt:
+      "Suivez pas à pas la création d'une console sur mesure dans notre atelier parisien, du choix du bois brut à la finition finale.",
+    body: '<p>Créer un meuble sur mesure, c\'est un dialogue constant entre le bois et la main de l\'artisan. Dans cet article, nous vous emmenons dans les coulisses de la fabrication d\'une console en chêne et acier.</p><h2>Le choix du bois</h2><p>Tout commence par la sélection du bois. Pour cette console, nous avons choisi un chêne français séché naturellement pendant deux ans. Les planches sont triées une à une pour leur grain, leur couleur et l\'absence de défauts.</p><h2>L\'assemblage</h2><p>Les techniques d\'assemblage traditionnelles — tenons-mortaises, queues d\'aronde — garantissent la solidité et la pérennité de la pièce. Aucune vis apparente, aucun raccourci.</p>',
+    coverImage: {
+      id: 201,
+      url: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=675&fit=crop",
+      alternativeText: "Atelier d'ébénisterie, fabrication d'une console",
+      width: 1200,
+      height: 675,
+      formats: null,
+    },
+    tags: ["savoir-faire", "atelier", "creation"],
+    category: "savoir-faire",
+    language: "fr",
+    relatedPieces: [mockPieces[8], mockPieces[9]],
+    seoKeywords: "ébéniste paris, console sur mesure, fabrication meuble bois",
+    seoDescription: null,
+    publishedAt: "2026-03-20T10:00:00.000Z",
+  },
+  {
+    id: 3,
+    title: "Guide des essences de bois dans le mobilier ancien français",
+    slug: "guide-essences-bois-mobilier-ancien-francais",
+    excerpt:
+      "Noyer, chêne, acajou, merisier : apprenez à identifier les essences de bois utilisées dans le mobilier ancien français et leurs caractéristiques.",
+    body: '<p>Savoir identifier une essence de bois est fondamental pour tout amateur de mobilier ancien. Chaque bois a ses caractéristiques visuelles, sa densité, son grain — et sa valeur.</p><h2>Le chêne</h2><p>Roi des forêts françaises, le chêne est le bois le plus utilisé dans le mobilier traditionnel. Reconnaissable à son grain prononcé et sa teinte dorée, il se patine magnifiquement avec le temps.</p><h2>Le noyer</h2><p>Bois noble par excellence, le noyer offre une palette allant du brun clair au brun foncé, avec des veinures spectaculaires. Très prisé pour les meubles d\'ébénisterie depuis le XVIIe siècle.</p>',
+    coverImage: {
+      id: 202,
+      url: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&h=675&fit=crop",
+      alternativeText: "Différentes essences de bois",
+      width: 1200,
+      height: 675,
+      formats: null,
+    },
+    tags: ["bois", "guide", "expertise"],
+    category: "expertise",
+    language: "fr",
+    relatedPieces: [mockPieces[3], mockPieces[9]],
+    seoKeywords: "essences bois meuble ancien, identifier bois meuble, chêne noyer acajou",
+    seoDescription: null,
+    publishedAt: "2026-03-15T10:00:00.000Z",
+  },
+];

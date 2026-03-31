@@ -7,12 +7,14 @@ interface PieceFiltersProps {
   subcategories: Subcategory[];
   activeFilter: string | null;
   onFilterChange: (slug: string | null) => void;
+  allLabel?: string;
 }
 
 export function PieceFilters({
   subcategories,
   activeFilter,
   onFilterChange,
+  allLabel = "Tout",
 }: PieceFiltersProps) {
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
@@ -25,7 +27,7 @@ export function PieceFilters({
             : "bg-bg-secondary text-text-secondary hover:text-text-primary"
         )}
       >
-        Tout
+        {allLabel}
       </button>
       {subcategories.map((sub) => (
         <button

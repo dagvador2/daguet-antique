@@ -5,21 +5,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-const navLinks = [
-  { href: "/antiquites", label: "Antiquités" },
-  { href: "/travaux", label: "Travaux" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/contact", label: "Contact" },
-];
+import { getPath } from "@/lib/routes";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import type { Locale } from "@/lib/i18n";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  locale: Locale;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dict: any;
 }
 
-export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export function MobileMenu({ isOpen, onClose, locale, dict }: MobileMenuProps) {
   const pathname = usePathname();
+
+  const navLinks = [
+    { route: "antiquites", label: dict.nav.antiquites },
+    { route: "travaux", label: dict.nav.travaux },
+    { route: "journal", label: dict.nav.journal },
+    { route: "about", label: dict.nav.about },
+    { route: "contact", label: dict.nav.contact },
+  ];
 
   // Close menu on route change
   useEffect(() => {
@@ -53,13 +60,14 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         >
           <nav className="flex flex-col items-center justify-center h-full gap-10">
             {navLinks.map((link) => {
+              const href = getPath(locale, link.route);
               const isActive =
-                pathname === link.href ||
-                pathname.startsWith(`${link.href}/`);
+                pathname === href ||
+                pathname.startsWith(`${href}/`);
               return (
                 <Link
-                  key={link.href}
-                  href={link.href}
+                  key={link.route}
+                  href={href}
                   onClick={onClose}
                   className={cn(
                     "font-serif text-3xl tracking-widest uppercase transition-colors duration-300",
@@ -72,6 +80,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 </Link>
               );
             })}
+            <div className="mt-4">
+              <LanguageSwitcher locale={locale} />
+            </div>
           </nav>
         </motion.div>
       )}

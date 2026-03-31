@@ -32,6 +32,9 @@
       "relation": "oneToMany",
       "target": "api::piece.piece",
       "mappedBy": "subcategory"
+    },
+    "name_en": {
+      "type": "string"
     }
   }
 }

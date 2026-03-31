@@ -3,26 +3,36 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { getPath } from "@/lib/routes";
+import type { Locale } from "@/lib/i18n";
 
-const navLinks = [
-  { href: "/antiquites", label: "Antiquités" },
-  { href: "/travaux", label: "Travaux" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/contact", label: "Contact" },
-];
+interface NavigationProps {
+  locale: Locale;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dict: any;
+}
 
-export function Navigation() {
+export function Navigation({ locale, dict }: NavigationProps) {
   const pathname = usePathname();
 
+  const navLinks = [
+    { route: "antiquites", label: dict.nav.antiquites },
+    { route: "travaux", label: dict.nav.travaux },
+    { route: "journal", label: dict.nav.journal },
+    { route: "about", label: dict.nav.about },
+    { route: "contact", label: dict.nav.contact },
+  ];
+
   return (
-    <nav className="hidden lg:flex items-center gap-8">
+    <nav className="flex items-center gap-8">
       {navLinks.map((link) => {
+        const href = getPath(locale, link.route);
         const isActive =
-          pathname === link.href || pathname.startsWith(`${link.href}/`);
+          pathname === href || pathname.startsWith(`${href}/`);
         return (
           <Link
-            key={link.href}
-            href={link.href}
+            key={link.route}
+            href={href}
             className={cn(
               "font-sans text-sm tracking-widest uppercase transition-colors duration-300",
               isActive

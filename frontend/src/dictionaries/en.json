@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "antiquites": "Antiques",
+    "travaux": "Creations",
+    "journal": "Journal",
+    "about": "About",
+    "contact": "Contact",
+    "legal": "Legal notices"
+  },
+  "common": {
+    "sold": "Sold",
+    "priceOnRequest": "Price on request",
+    "inProgress": "In progress",
+    "viewAll": "View all",
+    "contactUs": "Contact us",
+    "similarPieces": "Similar pieces",
+    "featuredPieces": "Featured pieces",
+    "all": "All"
+  },
+  "home": {
+    "subtitle": "Cabinetmaker · Designer · Antique Dealer"
+  },
+  "catalogue": {
+    "antiquitesTitle": "Antiques",
+    "antiquitesSubtitle": "20th century furniture, sourced and restored with care",
+    "travauxTitle": "Creations",
+    "travauxSubtitle": "Unique pieces, handcrafted in our workshop",
+    "empty": "No pieces at the moment."
+  },
+  "journal": {
+    "title": "Journal",
+    "subtitle": "Expertise, craftsmanship and behind the scenes",
+    "empty": "No articles at the moment.",
+    "categories": {
+      "all": "All",
+      "expertise": "Expertise",
+      "savoir-faire": "Craftsmanship",
+      "coulisses": "Behind the scenes",
+      "marche": "Market"
+    }
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send"
+  },
+  "footer": {
+    "tagline": "Cabinetmaker, designer and antique dealer",
+    "rights": "All rights reserved"
+  },
+  "meta": {
+    "tagline": "Cabinetmaker, Designer, Antique Dealer"
+  }
+}

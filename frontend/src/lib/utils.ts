@@ -4,10 +4,13 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 
 export function formatPrice(
   price: number | null,
-  showPrice: boolean
+  showPrice: boolean,
+  locale: string = "fr"
 ): string {
-  if (!showPrice || price === null) return "Prix sur demande";
-  return new Intl.NumberFormat("fr-FR", {
+  if (!showPrice || price === null) {
+    return locale === "en" ? "Price on request" : "Prix sur demande";
+  }
+  return new Intl.NumberFormat(locale === "en" ? "en-US" : "fr-FR", {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 0,

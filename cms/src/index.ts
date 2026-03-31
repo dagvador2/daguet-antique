@@ -1,9 +1,21 @@
 import type { Core } from '@strapi/strapi';
+import { getTranslator, setGlossaryId } from './utils/deepl';
+import { getOrCreateGlossary } from './utils/deepl-glossary';
 
 export default {
   register(/* { strapi }: { strapi: Core.Strapi } */) {},
 
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    // --- DeepL glossary ---
+    const translator = getTranslator();
+    if (translator) {
+      getOrCreateGlossary(translator).then((id) => {
+        if (id) {
+          setGlossaryId(id);
+          strapi.log.info(`DeepL glossary initialized: ${id}`);
+        }
+      });
+    }
     // --- Public permissions ---
     const publicRole = await strapi
       .query('plugin::users-permissions.role')
@@ -16,6 +28,8 @@ export default {
         'api::piece.piece.findOne',
         'api::subcategory.subcategory.find',
         'api::subcategory.subcategory.findOne',
+        'api::article.article.find',
+        'api::article.article.findOne',
         // Single types: find
         'api::homepage.homepage.find',
         'api::about-page.about-page.find',

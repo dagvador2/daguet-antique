@@ -3,14 +3,27 @@ import { getContactPage } from "@/lib/strapi";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { MapEmbed } from "@/components/contact/MapEmbed";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { getAlternates } from "@/lib/routes";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contactez Christophe Daguet pour toute demande de renseignement, commande sur mesure ou information sur une pi\u00E8ce.",
-};
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export default async function ContactPage() {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === "en";
+  return {
+    title: "Contact",
+    description: isEn
+      ? "Contact Christophe Daguet for any inquiry, custom order or information about a piece."
+      : "Contactez Christophe Daguet pour toute demande de renseignement, commande sur mesure ou information sur une pi\u00E8ce.",
+    alternates: getAlternates("contact"),
+  };
+}
+
+export default async function ContactPage({ params }: PageProps) {
+  const { locale } = await params;
+  const isEn = locale === "en";
   const contact = await getContactPage();
 
   return (
@@ -21,24 +34,23 @@ export default async function ContactPage() {
             Contact
           </h1>
           <p className="mt-4 text-center text-text-muted text-sm tracking-wider uppercase">
-            N&apos;h&eacute;sitez pas &agrave; nous contacter
+            {isEn ? "Feel free to get in touch" : "N\u2019h\u00E9sitez pas \u00E0 nous contacter"}
           </p>
         </ScrollReveal>
 
         <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left: info + map */}
           <ScrollReveal>
             <div className="space-y-8">
               <div className="space-y-4">
                 <div>
                   <h3 className="font-serif text-lg text-text-primary">
-                    Adresse
+                    {isEn ? "Address" : "Adresse"}
                   </h3>
                   <p className="mt-1 text-text-secondary">{contact.address}</p>
                 </div>
                 <div>
                   <h3 className="font-serif text-lg text-text-primary">
-                    T&eacute;l&eacute;phone
+                    {isEn ? "Phone" : "T\u00E9l\u00E9phone"}
                   </h3>
                   <p className="mt-1">
                     <a
@@ -50,9 +62,7 @@ export default async function ContactPage() {
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg text-text-primary">
-                    Email
-                  </h3>
+                  <h3 className="font-serif text-lg text-text-primary">Email</h3>
                   <p className="mt-1">
                     <a
                       href={`mailto:${contact.email}`}
@@ -68,7 +78,6 @@ export default async function ContactPage() {
             </div>
           </ScrollReveal>
 
-          {/* Right: form */}
           <ScrollReveal delay={0.15}>
             <ContactForm />
           </ScrollReveal>

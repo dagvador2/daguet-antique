@@ -70,6 +70,24 @@
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "seo_description": {
+      "type": "text"
+    },
+    "title_en": {
+      "type": "string"
+    },
+    "description_en": {
+      "type": "blocks"
+    },
+    "period_en": {
+      "type": "string"
+    },
+    "materials_en": {
+      "type": "string"
+    },
+    "seo_description_en": {
+      "type": "text"
     }
   }
 }

@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "antiquites": "Antiquités",
+    "travaux": "Travaux",
+    "journal": "Journal",
+    "about": "À propos",
+    "contact": "Contact",
+    "legal": "Mentions légales"
+  },
+  "common": {
+    "sold": "Vendu",
+    "priceOnRequest": "Prix sur demande",
+    "inProgress": "En cours",
+    "viewAll": "Voir tout",
+    "contactUs": "Contacter",
+    "similarPieces": "Pièces similaires",
+    "featuredPieces": "Pièces mentionnées",
+    "all": "Tout"
+  },
+  "home": {
+    "subtitle": "Ébéniste · Designer · Antiquaire"
+  },
+  "catalogue": {
+    "antiquitesTitle": "Antiquités",
+    "antiquitesSubtitle": "Mobilier du XXe siècle, chiné et restauré avec soin",
+    "travauxTitle": "Travaux & Créations",
+    "travauxSubtitle": "Pièces uniques, façonnées à la main dans notre atelier",
+    "empty": "Aucune pièce pour le moment."
+  },
+  "journal": {
+    "title": "Journal",
+    "subtitle": "Expertise, savoir-faire et coulisses de l'atelier",
+    "empty": "Aucun article pour le moment.",
+    "categories": {
+      "all": "Tout",
+      "expertise": "Expertise",
+      "savoir-faire": "Savoir-faire",
+      "coulisses": "Coulisses",
+      "marche": "Marché"
+    }
+  },
+  "contact": {
+    "name": "Nom",
+    "email": "Email",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer"
+  },
+  "footer": {
+    "tagline": "Ébéniste, designer et antiquaire",
+    "rights": "Tous droits réservés"
+  },
+  "meta": {
+    "tagline": "Ébéniste, Designer, Antiquaire"
+  }
+}

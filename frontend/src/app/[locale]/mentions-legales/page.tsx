@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { getAlternates } from "@/lib/routes";
 
 export const metadata: Metadata = {
   title: "Mentions l\u00E9gales",
   description: "Mentions l\u00E9gales du site Daguet Antique.",
+  alternates: getAlternates("legal"),
 };
 
 export default function MentionsLegales() {

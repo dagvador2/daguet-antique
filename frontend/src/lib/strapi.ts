@@ -6,6 +6,7 @@ import type {
   ContactPage,
   SiteSettings,
   StrapiMedia,
+  Article,
 } from "./types";
 import {
   mockPieces,
@@ -14,6 +15,7 @@ import {
   mockAboutPage,
   mockContactPage,
   mockSiteSettings,
+  mockArticles,
 } from "./mock-data";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
@@ -103,25 +105,28 @@ function slugify(text: string): string {
 
 // Map a raw Strapi piece to our domain Piece type
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function mapPiece(raw: any): Piece {
+function mapPiece(raw: any, locale: string = "fr"): Piece {
+  const useEn = locale === "en";
   return {
     id: raw.id,
-    title: raw.title,
+    title: (useEn && raw.title_en) || raw.title,
     slug: raw.slug || slugify(raw.title),
-    description: blocksToHtml(raw.description),
+    description: blocksToHtml(
+      (useEn && raw.description_en) || raw.description
+    ),
     photos: (raw.photos ?? []).map(mapMedia),
     category: raw.category,
     subcategory: raw.subcategory
       ? {
           id: raw.subcategory.id,
-          name: raw.subcategory.name,
+          name: (useEn && raw.subcategory.name_en) || raw.subcategory.name,
           slug: raw.subcategory.slug,
           category: raw.subcategory.category,
           order: raw.subcategory.order,
         }
       : null,
-    period: raw.period ?? null,
-    materials: raw.materials ?? null,
+    period: (useEn && raw.period_en) || (raw.period ?? null),
+    materials: (useEn && raw.materials_en) || (raw.materials ?? null),
     dimensions: raw.dimensions ?? null,
     provenance: raw.provenance ?? null,
     price: raw.price ?? null,
@@ -129,6 +134,8 @@ function mapPiece(raw: any): Piece {
     status: raw.sale_status === "sold" ? "sold" : "available",
     workInProgress: raw.work_in_progress ?? false,
     featured: raw.featured ?? false,
+    seoDescription:
+      (useEn && raw.seo_description_en) || (raw.seo_description ?? null),
     publishedAt: raw.publishedAt,
   };
 }
@@ -149,10 +156,13 @@ function mapMedia(raw: any): StrapiMedia {
 // Pieces
 // ---------------------------------------------------------------------------
 
-export async function getPieces(filters?: {
-  category?: "antiquite" | "creation";
-  subcategorySlug?: string;
-}): Promise<Piece[]> {
+export async function getPieces(
+  filters?: {
+    category?: "antiquite" | "creation";
+    subcategorySlug?: string;
+  },
+  locale: string = "fr"
+): Promise<Piece[]> {
   if (USE_MOCK) {
     let pieces = [...mockPieces];
     if (filters?.category) {
@@ -182,10 +192,13 @@ export async function getPieces(filters?: {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const data = await fetchStrapi<{ data: any[] }>("/pieces", params);
-  return (data?.data ?? []).map(mapPiece);
+  return (data?.data ?? []).map((raw) => mapPiece(raw, locale));
 }
 
-export async function getPieceBySlug(slug: string): Promise<Piece | null> {
+export async function getPieceBySlug(
+  slug: string,
+  locale: string = "fr"
+): Promise<Piece | null> {
   if (USE_MOCK) {
     return mockPieces.find((p) => p.slug === slug) ?? null;
   }
@@ -195,18 +208,22 @@ export async function getPieceBySlug(slug: string): Promise<Piece | null> {
   const data = await fetchStrapi<{ data: any[] }>("/pieces", {
     "populate": "*",
   });
-  const pieces = (data?.data ?? []).map(mapPiece);
+  const pieces = (data?.data ?? []).map((raw) => mapPiece(raw, locale));
   return pieces.find((p) => p.slug === slug) ?? null;
 }
 
 export async function getPiecesByCategory(
   category: "antiquite" | "creation",
-  subcategorySlug?: string
+  subcategorySlug?: string,
+  locale: string = "fr"
 ): Promise<Piece[]> {
-  return getPieces({ category, subcategorySlug });
+  return getPieces({ category, subcategorySlug }, locale);
 }
 
-export async function getFeaturedPieces(limit = 8): Promise<Piece[]> {
+export async function getFeaturedPieces(
+  limit = 8,
+  locale: string = "fr"
+): Promise<Piece[]> {
   if (USE_MOCK) {
     return mockPieces
       .filter((p) => p.featured)
@@ -224,7 +241,7 @@ export async function getFeaturedPieces(limit = 8): Promise<Piece[]> {
     "sort": "publishedAt:desc",
     "pagination[limit]": String(limit),
   });
-  return (data?.data ?? []).map(mapPiece);
+  return (data?.data ?? []).map((raw) => mapPiece(raw, locale));
 }
 
 // ---------------------------------------------------------------------------
@@ -315,6 +332,103 @@ export async function getContactPage(): Promise<ContactPage> {
     socialFacebook: raw.social_facebook || null,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Articles
+// ---------------------------------------------------------------------------
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapArticle(raw: any, locale: string = "fr"): Article {
+  const useEn = locale === "en";
+  return {
+    id: raw.id,
+    title: (useEn && raw.title_en) || raw.title,
+    slug: raw.slug || slugify(raw.title),
+    excerpt: (useEn && raw.excerpt_en) || (raw.excerpt ?? ""),
+    body: blocksToHtml((useEn && raw.body_en) || raw.body),
+    coverImage: raw.cover_image ? mapMedia(raw.cover_image) : null,
+    tags: raw.tags ?? [],
+    category: raw.category ?? "expertise",
+    language: raw.language ?? "fr",
+    relatedPieces: (raw.related_pieces ?? []).map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (p: any) => mapPiece(p, locale)
+    ),
+    seoKeywords: raw.seo_keywords ?? null,
+    seoDescription:
+      (useEn && raw.seo_description_en) || (raw.seo_description ?? null),
+    publishedAt: raw.publishedAt,
+  };
+}
+
+export async function getArticles(
+  filters?: { category?: string },
+  locale: string = "fr"
+): Promise<Article[]> {
+  if (USE_MOCK) {
+    let articles = [...mockArticles];
+    if (filters?.category) {
+      articles = articles.filter((a) => a.category === filters.category);
+    }
+    return articles.sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
+  }
+
+  const params: Record<string, string> = {
+    "populate[cover_image]": "*",
+    "populate[related_pieces][populate]": "photos",
+    "sort": "publishedAt:desc",
+  };
+  if (filters?.category) {
+    params["filters[category][$eq]"] = filters.category;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data = await fetchStrapi<{ data: any[] }>("/articles", params);
+  return (data?.data ?? []).map((raw) => mapArticle(raw, locale));
+}
+
+export async function getArticleBySlug(
+  slug: string,
+  locale: string = "fr"
+): Promise<Article | null> {
+  if (USE_MOCK) {
+    return mockArticles.find((a) => a.slug === slug) ?? null;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data = await fetchStrapi<{ data: any[] }>("/articles", {
+    "populate[cover_image]": "*",
+    "populate[related_pieces][populate]": "photos",
+  });
+  const articles = (data?.data ?? []).map((raw) => mapArticle(raw, locale));
+  return articles.find((a) => a.slug === slug) ?? null;
+}
+
+export async function getArticlesByPiece(
+  pieceId: number,
+  locale: string = "fr"
+): Promise<Article[]> {
+  if (USE_MOCK) {
+    return mockArticles.filter((a) =>
+      a.relatedPieces.some((p) => p.id === pieceId)
+    );
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data = await fetchStrapi<{ data: any[] }>("/articles", {
+    "filters[related_pieces][id][$eq]": String(pieceId),
+    "populate[cover_image]": "*",
+    "populate[related_pieces][populate]": "photos",
+  });
+  return (data?.data ?? []).map((raw) => mapArticle(raw, locale));
+}
+
+// ---------------------------------------------------------------------------
+// Single types
+// ---------------------------------------------------------------------------
 
 export async function getSiteSettings(): Promise<SiteSettings> {
   if (USE_MOCK) return mockSiteSettings;
