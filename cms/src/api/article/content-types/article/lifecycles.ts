@@ -6,9 +6,16 @@ const translating = new Set<string>();
 async function translateEntry(event: any) {
   const { result } = event;
   const docId = result?.documentId;
-  if (!docId) return;
+  strapi.log.info(`[DeepL] Article hook fired. documentId=${docId}, title=${result?.title}`);
+  if (!docId) {
+    strapi.log.warn('[DeepL] No documentId found in article lifecycle event');
+    return;
+  }
 
-  if (translating.has(docId)) return;
+  if (translating.has(docId)) {
+    strapi.log.info(`[DeepL] Skipping article ${docId} — already translating`);
+    return;
+  }
   translating.add(docId);
 
   try {
