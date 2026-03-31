@@ -72,7 +72,7 @@ export function Footer({ locale, dict }: FooterProps) {
 
           {/* Instagram */}
           <a
-            href="https://instagram.com/daguet_antique"
+            href="https://instagram.com/daguet_antiques"
             target="_blank"
             rel="noopener noreferrer"
             className="text-text-muted hover:text-text-primary transition-colors"
