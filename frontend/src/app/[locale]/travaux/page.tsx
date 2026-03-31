@@ -30,7 +30,7 @@ export default async function TravauxPage({ params }: PageProps) {
   const loc = locale as Locale;
   const dict = await getDictionary(loc);
   const [pieces, subcategories] = await Promise.all([
-    getPiecesByCategory("creation"),
+    getPiecesByCategory("creation", undefined, loc),
     getSubcategories("creation"),
   ]);
 

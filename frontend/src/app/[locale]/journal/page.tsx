@@ -29,7 +29,7 @@ export default async function JournalPage({ params }: PageProps) {
 
   const loc = locale as Locale;
   const dict = await getDictionary(loc);
-  const articles = await getArticles();
+  const articles = await getArticles(undefined, loc);
 
   return (
     <div className="pt-28 pb-20 md:pb-28">

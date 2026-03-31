@@ -30,7 +30,7 @@ export default async function AntiquitesPage({ params }: PageProps) {
   const loc = locale as Locale;
   const dict = await getDictionary(loc);
   const [pieces, subcategories] = await Promise.all([
-    getPiecesByCategory("antiquite"),
+    getPiecesByCategory("antiquite", undefined, loc),
     getSubcategories("antiquite"),
   ]);
 

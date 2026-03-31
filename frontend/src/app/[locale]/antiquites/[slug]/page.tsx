@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const piece = await getPieceBySlug(slug);
+  const piece = await getPieceBySlug(slug, locale as "fr" | "en");
 
   if (!piece || piece.category !== "antiquite") {
     return { title: locale === "en" ? "Piece not found" : "Pi\u00E8ce introuvable" };
@@ -47,13 +47,13 @@ export default async function AntiquePiecePage({ params }: PageProps) {
   const { locale, slug } = await params;
   if (!hasLocale(locale)) notFound();
 
-  const piece = await getPieceBySlug(slug);
-  if (!piece || piece.category !== "antiquite") notFound();
-
   const loc = locale as Locale;
   const isEn = locale === "en";
 
-  const allPieces = await getPieces({ category: "antiquite" });
+  const piece = await getPieceBySlug(slug, loc);
+  if (!piece || piece.category !== "antiquite") notFound();
+
+  const allPieces = await getPieces({ category: "antiquite" }, loc);
   const similarPieces = allPieces
     .filter((p) => p.id !== piece.id && p.subcategory?.slug === piece.subcategory?.slug)
     .slice(0, 3);

@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = await getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug, locale as "fr" | "en");
 
   if (!article) {
     return { title: locale === "en" ? "Article not found" : "Article introuvable" };
@@ -48,7 +48,7 @@ export default async function ArticlePage({ params }: PageProps) {
   const loc = locale as Locale;
   const isEn = locale === "en";
   const dict = await getDictionary(loc);
-  const article = await getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug, locale as "fr" | "en");
 
   if (!article) notFound();
 
