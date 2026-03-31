@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pieces",
+  "info": {
+    "singularName": "piece",
+    "pluralName": "pieces",
+    "displayName": "Piece"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "photos": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["antiquite", "creation"],
+      "required": true
+    },
+    "subcategory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::subcategory.subcategory",
+      "inversedBy": "pieces"
+    },
+    "period": {
+      "type": "string"
+    },
+    "materials": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "string"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "show_price": {
+      "type": "boolean",
+      "default": true
+    },
+    "sale_status": {
+      "type": "enumeration",
+      "enum": ["available", "sold"],
+      "default": "available",
+      "required": true
+    },
+    "work_in_progress": {
+      "type": "boolean",
+      "default": false
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

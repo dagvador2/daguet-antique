@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_pages",
+  "info": {
+    "singularName": "contact-page",
+    "pluralName": "contact-pages",
+    "displayName": "Contact Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "google_maps_embed": {
+      "type": "text"
+    },
+    "social_instagram": {
+      "type": "string"
+    },
+    "social_facebook": {
+      "type": "string"
+    }
+  }
+}
