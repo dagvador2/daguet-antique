@@ -19,9 +19,10 @@ export async function IntroBlock({ locale = "fr" }: { locale?: string }) {
               <h2 className="font-serif text-3xl md:text-4xl tracking-wide">
                 {isEn ? "The workshop" : "L\u2019atelier"}
               </h2>
-              <p className="text-text-secondary leading-relaxed text-base md:text-lg">
-                {homepage.introText}
-              </p>
+              <div
+                className="text-text-secondary leading-relaxed text-base md:text-lg [&_p]:mb-4"
+                dangerouslySetInnerHTML={{ __html: homepage.introText }}
+              />
               <Link
                 href={getPath(locale as "fr" | "en", "about")}
                 className="inline-block font-sans text-sm tracking-widest uppercase text-text-secondary hover:text-text-primary transition-colors border-b border-text-muted hover:border-text-primary pb-1"
