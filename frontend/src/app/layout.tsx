@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { LocalBusinessJsonLd } from "@/components/seo/LocalBusinessJsonLd";
 import "./globals.css";
 
@@ -46,6 +47,7 @@ export default async function RootLayout({
       <body className="min-h-screen flex flex-col antialiased">
         <LocalBusinessJsonLd />
         {children}
+        <Analytics />
       </body>
     </html>
   );
