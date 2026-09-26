@@ -17,6 +17,7 @@ export function proxy(request: NextRequest) {
   // Skip internal paths, API routes, static files
   if (
     pathname.startsWith("/_next") ||
+    pathname.startsWith("/_vercel") ||
     pathname.startsWith("/api") ||
     pathname === "/sitemap.xml" ||
     pathname === "/robots.txt" ||
@@ -82,6 +83,6 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!api|_next/static|_next/image|_vercel|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
